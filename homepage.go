@@ -50,52 +50,31 @@ type Service struct {
 	Category string `json:"category"`
 }
 
-func functionName() {
+func fetchServices() services []Service {
 	db, err := sql.Open("duckdb", "")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	// _, err = db.Exec(`INSERT INTO people VALUES (42, 'John')`)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// var id int
-	// var name string
 	rows, err := db.Query(`SELECT id, name, address, category FROM services`)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-	var services []struct {
-		ID       int
-		Name     string
-		Address  string
-		Category string
-	}
-
 	for rows.Next() {
 		var id int
-		var name string
-		var address string
-		var category string
+		var name, address, category string
 		err = rows.Scan(&id, &name, &address, &category)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		services = append(services, struct {
-			ID       int
-			Name     string
-			Address  string
-			Category string
-		}{
+		services = append(services, Service{
 			ID:       id,
-			Name:     name,
-			Address:  address,
+			Title:     name,
+			Url:  address,
 			Category: category,
 		})
 	}
@@ -103,10 +82,6 @@ func functionName() {
 	err = rows.Err()
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	for _, service := range services {
-		fmt.Printf("id: %d, name: %s\n", service.ID, service.Name)
 	}
 
 }
