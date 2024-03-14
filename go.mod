@@ -22,6 +22,7 @@ require (
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
+	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/moby/term v0.5.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect

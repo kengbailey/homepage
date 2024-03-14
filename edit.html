@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insert Service</title>
+  </head>
+
+  <script>
+    // Fetch services from the API and display them in the table
+    async function fetchServicesAndDisplay() {
+      try {
+        const response = await fetch('/getServices');
+        const services = await response.json();
+
+        // Clear the table body
+        const tbody = document.querySelector('#servicesTable tbody');
+        tbody.innerHTML = '';
+
+        // Add a row for each service
+        services.forEach(service => {
+          const row = `
+            <tr>
+              <td>${service.id}</td>
+              <td>${service.title}</td>
+              <td>${service.url}</td>
+              <td>${service.category}</td>
+            </tr>
+          `;
+          tbody.innerHTML += row;
+        });
+
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    }
+
+    fetchServicesAndDisplay();
+
+  </script>
+
+  <style>
+    .table-cell {
+    display: table-cell;
+    vertical-align: top;
+    border-right: 1px solid #ccc;
+    padding: 0 20px;
+  }
+  </style>
+
+  <body>
+    <table>
+      <tr>
+        <td  class="table-cell" >
+          <h1>Create Service</h1>
+          <form action="/createService" method="post">
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" required /><br /><br />
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required /><br /><br />
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" required /><br /><br />
+            <input type="submit" value="Insert Service" />
+          </form>
+        </td>
+        <br>
+        <td  class="table-cell" >
+          <h1>Delete Service</h1>
+          <form action="/deleteService" method="post">
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id" required /><br /><br />
+            <input type="submit" value="Delete Service" />
+          </form>
+        </td>
+      </tr>
+    </table>
+    
+    <br>
+    
+   <br>
+
+   <hr>
+
+   <table id="servicesTable" border="1">
+    <thead>
+      <tr>
+        <th>Service ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Category</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+  </body>
+</html>
