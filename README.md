@@ -11,4 +11,4 @@ Build Information:
     Storage: 4tb PCIE5.0 NVMe SSD 
     OS: Ubuntu 22.04.4 LTS
 
-<img src="assets/berry3.svg" height="350" width="400">
+<img src="assets/berry3.svg" >
