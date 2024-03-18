@@ -35,6 +35,32 @@
 </style>
     
 
+<script>
+    async function fetchBerryServices() {
+      try {
+        const response = await fetch('/getBerryServices');
+        const services = await response.json();
+
+        // Clear the table body
+        const tbody = document.querySelector('#berryApps small');
+        tbody.innerHTML = '';
+
+        // Add a row for each service
+        services.forEach(service => {
+          const row = `
+            <a serviceID="${service.id}" href="${service.url}" target="_blank">${service.title}</a><br>
+          `;
+          tbody.innerHTML += row;
+        });
+
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    }
+
+    fetchBerryServices();
+</script>
+
 <body>
     <table style="width: 600px; height: 60px; text-align: left; margin-left: auto; margin-right: auto;" border="1"
         cellpadding="2" cellspacing="2">
@@ -59,12 +85,12 @@
                 <td style="text-align: center; font-weight: bold; color: white; font-family: Calibri;width: 150px; background-color: rgb(0, 204, 204);"><span><small>AI</small></span></td>
             </tr>
             <tr>
-                <td style="text-align: left;font-family: Calibri; vertical-align: top; width: 150px;">
+                <td id="berryApps" style="text-align: left;font-family: Calibri; vertical-align: top; width: 150px;">
                     <small>
-                        <a href="http://192.168.50.133:8848/lab\?token\=151b68f88db743c59817a8b20353f30a68dbc52af9010615" target="_blank">3090 JupyterLab</a><br>
+                        <!-- <a href="http://192.168.50.133:8848/lab\?token\=151b68f88db743c59817a8b20353f30a68dbc52af9010615" target="_blank">3090 JupyterLab</a><br>
                         <a href="http://192.168.50.133:8080" target="_blank">3090 Open WebUI</a><br>
                         <a href="https://192.168.50.133:9090" target="_blank">Cockpit</a><br>
-                        <a href="http://192.168.50.133:9091" target="_blank">Minio</a><br>
+                        <a href="http://192.168.50.133:9091" target="_blank">Minio</a><br> -->
                         <!-- <a href="" target="_blank"></a><br> -->
                         <!-- <a href="" target="_blank"></a><br> -->
                     </small>
