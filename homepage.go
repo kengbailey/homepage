@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/marcboeker/go-duckdb"
 )
 
 func main() {
@@ -18,6 +18,7 @@ func main() {
 	http.HandleFunc("/getServices", fetchServices)
 	http.HandleFunc("/createService", createService)
 	http.HandleFunc("/deleteService", deleteService)
+	http.HandleFunc("/getBerryServices", fetchBerryServices)
 
 	log.Println("Listening on :80...")
 	err := http.ListenAndServe(":80", nil)
@@ -38,9 +39,44 @@ type Service struct {
 	Category string `json:"category"`
 }
 
+// fetchBerryServices ...
+func fetchBerryServices(w http.ResponseWriter, r *http.Request) {
+	db, err := sql.Open("duckdb", "duck.db")
+	handleError(err, "")
+	defer db.Close()
+
+	rows, err := db.Query(`SELECT id, name, address FROM services where category = 'Berry'`)
+	handleError(err, "")
+	defer rows.Close()
+
+	services := make([]Service, 0)
+	for rows.Next() {
+		var id int
+		var name, address string
+		err = rows.Scan(&id, &name, &address)
+		handleError(err, "")
+
+		services = append(services, Service{
+			ID:    id,
+			Title: name,
+			Url:   address,
+		})
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	jsonData, err := json.Marshal(services)
+	handleError(err, "")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
+}
+
 // fetchServices ...
 func fetchServices(w http.ResponseWriter, r *http.Request) {
-	db, err := sql.Open("sqlite3", "homepage.db")
+	db, err := sql.Open("duckdb", "duck.db")
 	handleError(err, "")
 	defer db.Close()
 
@@ -76,7 +112,7 @@ func fetchServices(w http.ResponseWriter, r *http.Request) {
 
 // createService ...
 func createService(w http.ResponseWriter, r *http.Request) {
-	db, err := sql.Open("sqlite3", "homepage.db")
+	db, err := sql.Open("duckdb", "duck.db")
 	handleError(err, "")
 	defer db.Close()
 
@@ -85,12 +121,13 @@ func createService(w http.ResponseWriter, r *http.Request) {
 	_, err = db.Exec(sqlStatement, id, r.FormValue("title"), r.FormValue("url"), r.FormValue("category"))
 	handleError(err, "")
 
-	fmt.Fprintf(w, "Successfully inserted service: %s", r.FormValue("title"))
+	// fmt.Fprintf(w, "Successfully inserted service: %s", r.FormValue("title"))
+	http.Redirect(w, r, "/index.html", http.StatusCreated)
 }
 
 // deleteService ...
 func deleteService(w http.ResponseWriter, r *http.Request) {
-	db, err := sql.Open("sqlite3", "homepage.db")
+	db, err := sql.Open("duckdb", "duck.db")
 	handleError(err, "")
 	defer db.Close()
 
