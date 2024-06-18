@@ -19,10 +19,25 @@ func main() {
 	http.HandleFunc("/createService", createService)
 	http.HandleFunc("/deleteService", deleteService)
 	http.HandleFunc("/getBerryServices", fetchBerryServices)
+	http.HandleFunc("/editService", editService)
 
 	log.Println("Listening on :80...")
 	err := http.ListenAndServe(":80", nil)
 	handleError(err, "")
+}
+
+// editService ...
+func editService(w http.ResponseWriter, r *http.Request) {
+	db, err := sql.Open("duckdb", "duck.db")
+	handleError(err, "")
+	defer db.Close()
+
+	sqlStatement := `UPDATE services SET name = $1, address = $2, category = $3 WHERE id = $4`
+	_, err = db.Exec(sqlStatement, r.FormValue("title"), r.FormValue("url"), r.FormValue("category"), r.FormValue("id"))
+	handleError(err, "Failed to edit service")
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Successfully edited service: %s", r.FormValue("id"))
 }
 
 // handleError ...
