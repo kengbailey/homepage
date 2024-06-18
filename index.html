@@ -38,6 +38,11 @@
   text-align: center; /* Centers the text within that space */
 }
 
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 </style>
     
 
@@ -54,7 +59,7 @@
         // Add a row for each service
         services.forEach(service => {
           const row = `
-            <a serviceID="${service.id}" href="${service.url}" target="_blank" class="btn blue" style="text-decoration: underline;">${service.title}</a><br>
+            <a serviceID="${service.id}" href="${service.url}" target="_blank" class="btn blue" style="text-decoration: underline; margin: 5px;">${service.title}</a>
           `;
           tbody.innerHTML += row;
         });
@@ -102,14 +107,14 @@
                     <div class="card-content white-text">
                         <span class="card-title">Berry Apps</span>
                         <div id="berryApps">
-                            <small>
-                                <!-- <a href="http://192.168.50.133:8848/lab\?token\=151b68f88db743c59817a8b20353f30a68dbc52af9010615" target="_blank">3090 JupyterLab</a><br>
-                                <a href="http://192.168.50.133:8080" target="_blank">3090 Open WebUI</a><br>
-                                <a href="https://192.168.50.133:9090" target="_blank">Cockpit</a><br>
-                                <a href="http://192.168.50.133:9091" target="_blank">Minio</a><br> -->
-                                <!-- <a href="" target="_blank"></a><br> -->
-                                <!-- <a href="" target="_blank"></a><br> -->
-                            </small>
+                            <div class="button-container">
+                                <!-- <a href="http://192.168.50.133:8848/lab\?token\=151b68f88db743c59817a8b20353f30a68dbc52af9010615" target="_blank">3090 JupyterLab</a>
+                                <a href="http://192.168.50.133:8080" target="_blank">3090 Open WebUI</a>
+                                <a href="https://192.168.50.133:9090" target="_blank">Cockpit</a>
+                                <a href="http://192.168.50.133:9091" target="_blank">Minio</a> -->
+                                <!-- <a href="" target="_blank"></a>
+                                <a href="" target="_blank"></a> -->
+                            </div>
                         </div>
                     </div>
                 </div>
