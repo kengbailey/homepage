@@ -54,7 +54,11 @@
         // Add a row for each service
         services.forEach(service => {
           const row = `
-            <a serviceID="${service.id}" href="${service.url}" target="_blank">${service.title}</a><br>
+            <div class="card small">
+              <div class="card-content">
+                <a serviceID="${service.id}" href="${service.url}" target="_blank" class="white-text">${service.title}</a>
+              </div>
+            </div>
           `;
           tbody.innerHTML += row;
         });
