@@ -116,13 +116,13 @@ func createService(w http.ResponseWriter, r *http.Request) {
 	handleError(err, "")
 	defer db.Close()
 
-	var id int64 = rand.Int63n(100)
-	sqlStatement := `INSERT INTO services (id, name, address, category) VALUES (?, ?, ?, ?)`
-	_, err = db.Exec(sqlStatement, id, r.FormValue("title"), r.FormValue("url"), r.FormValue("category"))
+	var newID int64 = rand.Int63n(100)
+	sqlStatement := `INSERT INTO services (id, name, address, category) VALUES ($1, $2, $3, $4)`
+	_, err = db.Exec(sqlStatement, newID, r.FormValue("title"), r.FormValue("url"), r.FormValue("category"))
 	handleError(err, "")
 
-	// fmt.Fprintf(w, "Successfully inserted service: %s", r.FormValue("title"))
-	http.Redirect(w, r, "/index.html", http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Successfully inserted service: %v", newID)
 }
 
 // deleteService ...
