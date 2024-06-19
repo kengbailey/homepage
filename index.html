@@ -52,6 +52,17 @@ body {
     background-color: inherit; /* Set card background color to transparent if needed */
 }
 
+.custom-card {
+border-radius: 15px; /* Adjust the value as needed for the desired roundness */
+width: 90%; /* Adjust the value to your preferred card size */
+max-width: 300px; /* Max width for the cards */
+margin: 10px auto; /* Center the card with some margin */
+}
+
+.custom-card .card-content {
+padding: 20px; /* Adjust padding for a smaller card */
+}
+
 </style>
     
 
@@ -62,15 +73,23 @@ body {
         const services = await response.json();
 
         // Clear the table body
-        const tbody = document.querySelector('#berryApps small');
+        const tbody = document.querySelector('#berryApps');
         tbody.innerHTML = '';
 
         // Add a row for each service
         services.forEach(service => {
-          const row = `
-            <a serviceID="${service.id}" href="${service.url}" target="_blank" class="btn blue" style="text-decoration: underline;">${service.title}</a><br>
-          `;
-          tbody.innerHTML += row;
+            const card = `
+            <div class="col s12 m6 l4">
+              <a href="${service.url}" target="_blank" class="white-text">
+                <div class="card green darken-3 z-depth-3 custom-card">
+                  <div class="card-content white-text center">
+                    <span class="card-title">${service.title}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            `;
+            tbody.innerHTML += card;
         });
 
       } catch (error) {
@@ -82,13 +101,15 @@ body {
 </script>
 
 <body>
+    <!-- App Bar Navigation -->
     <nav>
         <div class="nav-wrapper brown darken-1">
             <a href="#" class="brand-logo center">App Bar</a>
         </div>
     </nav>
-</br>
+    </br>
     <div class="container">
+        <!-- Quick Links Row -->
         <div class="row">
             <div class="col s12 m6 l3 center-align">
                 <a href="https://old.reddit.com" class="btn-floating btn-large waves-effect waves-light red" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
@@ -111,18 +132,21 @@ body {
                 </a>
             </div>
         </div>
+        <!-- Berry Apps Row-->
         <div class="row">
             <div class="col s12">
                 <div class="card brown darken-3">
                     <div class="card-content white-text">
                         <span class="card-title">Berry Apps</span>
                         <div id="berryApps">
-                            <small>
-                            </small>
+                            
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Personal Links Row #1-->
+        <div class="row">
             <div class="col s12 m6 l3">
                 <div class="card blue darken-4">
                     <div class="card-content white-text">
@@ -160,6 +184,7 @@ body {
                 </div>
             </div>
         </div>
+        <!-- Personal Links Row #2-->
         <div class="row">
             <div class="col s12 m6 l3">
                 <div class="card green darken-4">
