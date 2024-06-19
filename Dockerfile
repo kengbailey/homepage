@@ -17,7 +17,7 @@ WORKDIR /app
 RUN go build -o main .
 
 # Expose port 80 to the outside world
-EXPOSE 80
+EXPOSE 1111
 
 # Run the binary when the container launches
 CMD ["/app/main"]
