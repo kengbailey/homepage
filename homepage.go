@@ -21,7 +21,7 @@ func main() {
 	http.HandleFunc("/getBerryServices", fetchBerryServices)
 	http.HandleFunc("/editService", editService)
 
-	log.Println("Listening on :80...")
+	log.Println("Listening on :1111 ...")
 	err := http.ListenAndServe(":1111", nil)
 	handleError(err, "")
 }
