@@ -132,12 +132,29 @@ func createService(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var newID int64 = rand.Int63n(100)
+
+	// Check if the generated ID already exists in the database
+	for {
+		idExists := checkIfIDExists(db, newID)
+		if !idExists {
+			break
+		}
+		newID = rand.Int63n(100) // If it does, generate a new ID and try again
+	}
 	sqlStatement := `INSERT INTO services (id, name, address, category) VALUES ($1, $2, $3, $4)`
 	_, err = db.Exec(sqlStatement, newID, r.FormValue("title"), r.FormValue("url"), r.FormValue("category"))
 	handleError(err, "")
 
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Successfully inserted service: %v", newID)
+}
+
+// checkIfIDExists ...
+func checkIfIDExists(db *sql.DB, id int64) bool {
+	var exists bool
+	err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM services WHERE id = $1)", id).Scan(&exists)
+	handleError(err, "")
+	return exists
 }
 
 // deleteService ...
